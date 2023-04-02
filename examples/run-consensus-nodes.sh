@@ -1,16 +1,19 @@
-#! /bin/bash
+#!/bin/bash
 
-export RUST_LOG=hbbft=debug,consensus_node=debug
+export RUST_LOG=hbbft=warn,consensus_node=warn
+export RUST_BACKTRACE=1
 
-cargo build --example consensus-node
+DELAY_SEC=0
 
-target/debug/examples/consensus-node --bind-address=127.0.0.1:5000 --remote-address=127.0.0.1:5001 --remote-address=127.0.0.1:5002 --remote-address=127.0.0.1:5003 --remote-address=127.0.0.1:5004 --value=Foo &
-sleep 1
-target/debug/examples/consensus-node --bind-address=127.0.0.1:5001 --remote-address=127.0.0.1:5000 --remote-address=127.0.0.1:5002 --remote-address=127.0.0.1:5003 --remote-address=127.0.0.1:5004 &
-sleep 1
-target/debug/examples/consensus-node --bind-address=127.0.0.1:5002 --remote-address=127.0.0.1:5000 --remote-address=127.0.0.1:5001 --remote-address=127.0.0.1:5003 --remote-address=127.0.0.1:5004 &
-sleep 1
-target/debug/examples/consensus-node --bind-address=127.0.0.1:5003 --remote-address=127.0.0.1:5000 --remote-address=127.0.0.1:5001 --remote-address=127.0.0.1:5002 --remote-address=127.0.0.1:5004 &
-sleep 1
-target/debug/examples/consensus-node --bind-address=127.0.0.1:5004 --remote-address=127.0.0.1:5000 --remote-address=127.0.0.1:5001 --remote-address=127.0.0.1:5002 --remote-address=127.0.0.1:5003 &
+cargo build --release --example consensus-node
+
+cargo run --release --example consensus-node -- --bind-address=127.0.0.1:5000 --remote-address=127.0.0.1:5001 --remote-address=127.0.0.1:5002 --remote-address=127.0.0.1:5003 --remote-address=127.0.0.1:5004 --value=SomeNewMessageHereEh &
+sleep ${DELAY_SEC}
+cargo run --release --example consensus-node -- --bind-address=127.0.0.1:5001 --remote-address=127.0.0.1:5000 --remote-address=127.0.0.1:5002 --remote-address=127.0.0.1:5003 --remote-address=127.0.0.1:5004 &
+sleep ${DELAY_SEC}
+cargo run --release --example consensus-node -- --bind-address=127.0.0.1:5002 --remote-address=127.0.0.1:5000 --remote-address=127.0.0.1:5001 --remote-address=127.0.0.1:5003 --remote-address=127.0.0.1:5004 &
+sleep ${DELAY_SEC}
+cargo run --release --example consensus-node -- --bind-address=127.0.0.1:5003 --remote-address=127.0.0.1:5000 --remote-address=127.0.0.1:5001 --remote-address=127.0.0.1:5002 --remote-address=127.0.0.1:5004 &
+sleep ${DELAY_SEC}
+cargo run --release --example consensus-node -- --bind-address=127.0.0.1:5004 --remote-address=127.0.0.1:5000 --remote-address=127.0.0.1:5001 --remote-address=127.0.0.1:5002 --remote-address=127.0.0.1:5003 &
 wait
