@@ -13,12 +13,9 @@ categories = ["algorithms", "asynchronous", "cryptography", "network-programming
 keywords = ["consensus", "asynchronous", "threshold"]
 license = "MIT/Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/poanetwork/hbbft"
+repository = "https://github.com/wbv/hbbft_rust"
 description = "The Honey Badger of Byzantine Fault Tolerant Consensus Protocols"
 edition = "2021"
-
-[badges]
-travis-ci = { repository = "poanetwork/hbbft" }
 
 [dependencies]
 bincode = "1.2.0"
@@ -33,7 +30,7 @@ rand = "0.6.5"
 rand_derive = "0.5.0"
 reed-solomon-erasure = "4.0.1"
 serde = { version = "1.0.102", features = ["derive", "rc"] }
-threshold_crypto = { rev = "624eeee", git = "https://github.com/poanetwork/threshold_crypto" }
+threshold_crypto = { path = "../hbbft_threshold_crypto" }
 tiny-keccak = { version = "2.0.1", features = ["sha3"]}
 
 [dev-dependencies]
